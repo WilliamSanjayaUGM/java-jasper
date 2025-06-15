@@ -1,0 +1,56 @@
+/* shared-styles.css */
+
+/* Form layout spacing */
+.user-form {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* TextField and EmailField spacing */
+.user-form vaadin-text-field,
+.user-form vaadin-email-field,
+.user-form vaadin-text-area,
+.user-form vaadin-integer-field,
+.user-form vaadin-date-picker {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Gender radio buttons */
+.user-form vaadin-radio-button-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.user-form vaadin-radio-button-group vaadin-radio-button {
+  padding: 5px 0;
+}
+
+/* Save button */
+.user-form vaadin-button {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.user-form vaadin-button:hover {
+  background-color: #0d47a1;
+}
+
+.user-list {
+  padding: 20px;
+}
+
+.user-list vaadin-grid {
+  margin-top: 20px;
+  height: 300px;
+}
+
+.not-found {
+  text-align: center;
+  font-size: 24px;
+  color: crimson;
+  padding: 100px;
+}

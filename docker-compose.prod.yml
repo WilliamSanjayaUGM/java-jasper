@@ -1,0 +1,15 @@
+# For production
+version: '3.8'
+
+services:
+  java-jasper:
+    image: your-registry/java-jasper:prod
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:manulifedb
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate

@@ -1,0 +1,36 @@
+### VS Code ###
+.vscode/
+
+#Maven
+target/
+.mvn/
+
+#Node / Vaadin Frontend
+node_modules/
+package-lock.json
+vite.generated.ts
+
+# IDE / Build Tools
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Optional: exclude compiled TypeScript (if not needed in repo)
+*.tsbuildinfo
+
+# Optional: exclude env files if used
+.env
+.env.*
