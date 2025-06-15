@@ -154,7 +154,7 @@ Replace `ClassNameTest` with one of the following:
 | `UserListViewTest`           | Validates Vaadin UI Inquiry Grid User        |
 | `UserRestTest`               | Tests User Rest API Controller               |
 
-Total Tests run: 22, Failures: 0, Errors: 0, Skipped: 1
+> Total Tests run: 22, Failures: 0, Errors: 0, Skipped: 1
 ---
 
 ## 📁 Local Configuration Example
