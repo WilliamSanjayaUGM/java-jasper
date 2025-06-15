@@ -57,20 +57,18 @@ public class UserForm extends FormLayout implements BeforeEnterObserver{
 		// Field binding with validation
 		fieldBindingValidation();
 		
-		save.addClickListener(e->{
-			User u = new User();
-			if(binder.writeBeanIfValid(u)) {
-				//Create backgroun thread
-				new Thread(() ->{
-					userService.save(u);
-					ui.access(()->{
-						Notification.show("User Saved");
-						ui.navigate("");
-					});
-				}).start();
-			}else {
-				Notification.show("There are still incomplete field");
-			}
+		save.addClickListener(e -> {
+		    if (binder.writeBeanIfValid(user)) {
+		        new Thread(() -> {
+		            userService.save(user);
+		            ui.access(() -> {
+		                Notification.show("User Saved");
+		                ui.navigate(""); // You can navigate to the list page
+		            });
+		        }).start();
+		    } else {
+		        Notification.show("There are still incomplete fields");
+		    }
 		});
 		
 		cancel.addClickListener(e -> ui.navigate(""));
@@ -119,10 +117,17 @@ public class UserForm extends FormLayout implements BeforeEnterObserver{
 		
 		binder.forField(phoneNo).asRequired("Phone number is required")
 	    	.withValidator(phone -> phone.startsWith("+62"), "Phone must start with +62")
-	    	.withValidator(n -> (n.length() >= 9 && n.length()<=15), "Phone Length Must be between 9 - 15 character")
+	    	.withValidator(
+	    	        phone -> {
+	    	            if (!phone.startsWith("+62")) return false; // defensive check
+	    	            String numberPart = phone.substring(3);
+	    	            return numberPart.matches("\\d{9,15}");
+	    	        },
+	    	        "Phone must have 9 to 15 digits after +62"
+	    	    )
 	    	.bind(User::getPhoneNo, User::setPhoneNo);
 		
-		binder.forField(gender).bind(User::isMale, User::setMale);
+		binder.forField(gender).asRequired("Gender is required").bind(User::isMale, User::setMale);
 		
 		binder.forField(dob) // dob is a DatePicker, and bound to LocalDate
 	    .withValidator(
@@ -130,6 +135,8 @@ public class UserForm extends FormLayout implements BeforeEnterObserver{
 	        "Date must be in the past"
 	    )
 	    .bind(User::getDateOfBirth, User::setDateOfBirth);
+		
+		binder.forField(address).bind(User::getAddress,User::setAddress);
 	}
 	
 	private void clearForm() {

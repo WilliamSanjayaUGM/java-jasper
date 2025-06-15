@@ -19,7 +19,7 @@ import jakarta.validation.constraints.Pattern;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Email(message = "Invalid email format")
 	@NotBlank(message = "Email is required")
@@ -40,11 +40,11 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private LocalDate dateOfBirth;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -112,6 +112,7 @@ public class UserListView extends VerticalLayout{
         grid.addColumn(user -> user.isMale() ? "Male" : "Female").setHeader("Gender");
         grid.addColumn(user->user.getDateOfBirth()!=null ? 
         		user.getDateOfBirth().toString():"").setHeader("Date of Birth");
+        grid.addColumn(User::getAddress).setHeader("Address");
         
         grid.addComponentColumn(user->{
         	Button edit = new Button("Edit", e -> UI.getCurrent().navigate("user-form/" + user.getId()));

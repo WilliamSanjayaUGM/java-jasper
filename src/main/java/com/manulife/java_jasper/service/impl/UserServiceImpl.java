@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,21 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User save(@Valid User user) {
-		User saved = userRepository.save(user);
+		if (user.getId() != null) {
+	        Optional<User> existing = userRepository.findById(user.getId());
+	        if (existing.isPresent()) {
+	            // Optionally copy only updatable fields
+	            User old = existing.get();
+	            old.setName(user.getName());
+	            old.setEmail(user.getEmail());
+	            old.setPhoneNo(user.getPhoneNo());
+	            old.setAddress(user.getAddress());
+	            old.setMale(user.isMale());
+	            old.setDateOfBirth(user.getDateOfBirth());
+	            user = old;
+	        }
+	    }
+	    User saved = userRepository.save(user);
 	    broadcaster.broadcast();
 	    return saved;
 	}
@@ -46,9 +61,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUserById(long id) {
 		User user= userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
-		LOGGER.info("userForm: "+user.getName());
-		LOGGER.info("userForm: "+user.getDateOfBirth());
-		LOGGER.info("userForm: "+user.isMale());
 		return user;
 	}
 	
