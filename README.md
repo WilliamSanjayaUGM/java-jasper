@@ -18,6 +18,9 @@ This guide explains how to run, build, test, and deploy the `java-jasper` Spring
 git clone git@github.com:WilliamSanjayaUGM/java-jasper.git
 cd java-jasper
 
+# Clean package and rebuild
+mvn clean package
+
 # Run the application
 mvn clean spring-boot:run
 ```

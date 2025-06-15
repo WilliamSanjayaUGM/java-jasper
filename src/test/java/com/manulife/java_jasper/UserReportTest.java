@@ -70,17 +70,18 @@ public class UserReportTest {
 	    assertTrue(ex.getMessage().contains("No user available"));
 	}
 	
-	// Rename/move the file "user_report.jasper" from resources to simulate missing template
+	// Rename/move the file "user_report.jrxmlr" from resources to simulate missing template
 	@Test
     void testGenerateReportThrowsWhenTemplateMissing() {
 		userService.save(buildValidUser());
 
-        InputStream templateStream = getClass().getResourceAsStream("/user_report.jasper");
-        assumeTrue(templateStream == null, "Test requires jasper file to be missing");
+        InputStream templateStream = getClass().getResourceAsStream("/user_report.jrxml");
+        assumeTrue(templateStream == null, "Test requires jrxml file to be missing");
 
         ReportGenerateException ex = assertThrows(ReportGenerateException.class, () -> {
             reportService.generateReport();
         });
+
         assertTrue(ex.getMessage().contains("template not found"));
     }
 }

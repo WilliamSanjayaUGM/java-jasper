@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +23,21 @@ import com.manulife.java_jasper.dto.UserRequestByIdDto;
 import com.manulife.java_jasper.model.User;
 import com.manulife.java_jasper.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class UserRestTest {
 	
-	@Autowired private MockMvc mockMvc;
-    @Autowired private ObjectMapper objectMapper;
-    @Autowired private UserRepository userRepository;
+	@Autowired 
+	private MockMvc mockMvc;
+	
+    @Autowired 
+    private ObjectMapper objectMapper;
+    
+    @Autowired 
+    private UserRepository userRepository;
 
     private User user;
 
@@ -45,7 +51,7 @@ public class UserRestTest {
 	    user.setAddress("Jakarta");
 	    user.setMale(true);
 	    user.setDateOfBirth(LocalDate.of(1996, 7, 21));
-        user = userRepository.save(user);
+	    user = userRepository.saveAndFlush(user);
     }
 
     @Test
@@ -64,7 +70,10 @@ public class UserRestTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("Sanjay"));
     }
-
+    
+    /*
+     * It will refer to the  user.setEmail("william.sanjaya@mail.ugm.ac.id") at the @BeforeEach setUp()
+     */
     @Test
     void testGetUserById() throws Exception {
         UserRequestByIdDto dto = new UserRequestByIdDto(user.getId());
@@ -73,7 +82,7 @@ public class UserRestTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value("Sanjay@example.com"));
+            .andExpect(jsonPath("$.email").value("william.sanjaya@mail.ugm.ac.id"));
     }
 
     @Test
@@ -100,7 +109,7 @@ public class UserRestTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content[0].name").value("William"));
+            .andExpect(jsonPath("$.content[0].name").value("william"));
     }
 
     @Test

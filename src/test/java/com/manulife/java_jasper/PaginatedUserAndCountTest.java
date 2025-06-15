@@ -80,7 +80,7 @@ public class PaginatedUserAndCountTest {
 	    userService.save(user2);
 
 	    Pageable pageable = PageRequest.of(0, 10);
-	    Page<User> page = userService.findPaginatedUser(null, LocalDate.of(2000, 1, 1), pageable);
+	    Page<User> page = userService.findPaginatedUser(null, LocalDate.of(1999, 1, 1), pageable);
 
 	    assertEquals(1, page.getTotalElements());
 	    assertEquals("c@example.com", page.getContent().get(0).getEmail());
