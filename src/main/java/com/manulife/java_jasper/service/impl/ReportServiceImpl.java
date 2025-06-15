@@ -3,6 +3,7 @@ package com.manulife.java_jasper.service.impl;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,11 @@ import com.manulife.java_jasper.model.User;
 import com.manulife.java_jasper.service.ReportService;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
@@ -45,25 +48,28 @@ public class ReportServiceImpl implements ReportService{
 		
 		try {
 			//Load compile jasper report
-			InputStream inputStream=getClass().getResourceAsStream("/user_report.jasper");
-			
-			if (inputStream == null) {
-				LOGGER.error("Jasper report template not found in resources.");
-                throw new ReportGenerateException("Jasper report template not found in resources.");
-            }
-			JRBeanCollectionDataSource usersDataSource=new JRBeanCollectionDataSource(reportUsers);
-			LOGGER.info("It reaches here2");
-			LocalDateTime now=LocalDateTime.now();
-			DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String formattedDate=now.format(formatter);
-			Map<String, Object> parameters = Map.of("requestedDate", formattedDate);
-			LOGGER.info("It reaches here1");
-			JasperPrint print=JasperFillManager.fillReport(inputStream, parameters,usersDataSource);
-			LOGGER.info("It reaches here: "+print.getName());
+			InputStream jrxmlStream = getClass().getResourceAsStream("/user_report.jrxml");
+			if (jrxmlStream == null) {
+			    throw new ReportGenerateException("JRXML template not found in resources.");
+			}
+
+			JasperReport report = JasperCompileManager.compileReport(jrxmlStream);
+			JRBeanCollectionDataSource usersDataSource = new JRBeanCollectionDataSource(reportUsers);
+
+			LocalDateTime now = LocalDateTime.now();
+			String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			Map<String, Object> parameters = new HashMap<>();
+			parameters.put("requestedDate", formattedDate);
+
+			JasperPrint print = JasperFillManager.fillReport(report, parameters, usersDataSource);
 			return JasperExportManager.exportReportToPdf(print);
-		}catch(JRException e) {
-			LOGGER.error(e.getMessage());
-			throw new ReportGenerateException("Failed to generate Jasper Report.",e);
+		} catch (JRException e) {
+		    LOGGER.error("JRException while generating report", e); // <-- Full stacktrace
+		    throw new ReportGenerateException("Failed to generate Jasper Report.", e);
+		} catch (Exception ex) {
+		    LOGGER.error("Unexpected exception", ex); // <-- Just in case
+		    throw new ReportGenerateException("Unexpected error occurred while generating report.", ex);
 		}
+
 	}
 }
