@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.manulife.java_jasper.model.User;
-import com.manulife.java_jasper.service.Broadcaster;
+import com.manulife.java_jasper.service.BroadcasterService;
 import com.manulife.java_jasper.service.ReportService;
 import com.manulife.java_jasper.service.UserService;
 import com.vaadin.flow.component.UI;
@@ -16,7 +16,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -41,10 +40,10 @@ public class UserListView extends VerticalLayout{
 	private final TextField nameFilter=new TextField();
 	private final DatePicker dobFilter = new DatePicker();
 	
-	private final Broadcaster broadcaster;
+	private final BroadcasterService broadcaster;
 	private Registration broadcasterRegistration;
 	
-	public UserListView(UserService userService,ReportService reportService, Broadcaster broadcaster) {
+	public UserListView(UserService userService,ReportService reportService, BroadcasterService broadcaster) {
 		addClassName("user-list");
 		this.userService=userService;
 		this.reportService=reportService;
@@ -135,4 +134,19 @@ public class UserListView extends VerticalLayout{
 					return userService.findPaginatedUser(name, dob, pageable).stream();
 				}, query -> (int) userService.count(name,dob)));
 	}
+
+	//--------------Start Getter & Setter ------------------------------
+	public Grid<User> getGrid() {
+		return grid;
+	}
+
+	public TextField getNameFilter() {
+		return nameFilter;
+	}
+
+	public DatePicker getDobFilter() {
+		return dobFilter;
+	}
+	
+	
 }

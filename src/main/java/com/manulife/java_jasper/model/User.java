@@ -1,6 +1,6 @@
 package com.manulife.java_jasper.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +38,7 @@ public class User {
 	
 	@Past(message = "Date of birth must be in the past")
 	@Temporal(TemporalType.DATE)
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 
 	public long getId() {
 		return id;
@@ -80,11 +80,11 @@ public class User {
 		this.male = male;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

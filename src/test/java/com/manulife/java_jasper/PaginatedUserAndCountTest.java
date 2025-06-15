@@ -45,8 +45,7 @@ public class PaginatedUserAndCountTest {
 	     user.setName("William Sanjaya");
 	     user.setAddress("Jakarta");
 	     user.setMale(true);
-	     user.setDateOfBirth(Date.from(LocalDate.of(1996, 7, 21)
-	                .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	     user.setDateOfBirth(LocalDate.of(1996, 7, 21));
 	     return user;
 	}
     
@@ -58,8 +57,7 @@ public class PaginatedUserAndCountTest {
 	    user2.setEmail("test@example.com");
         user2.setPhoneNo("+628123456790");
 	    user2.setName("Alice");
-	    user2.setDateOfBirth(Date.from(LocalDate.of(1990, 1, 1)
-	        .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	    user2.setDateOfBirth(LocalDate.of(1990, 1, 1));
 	    userService.save(user2);
 
 	    Pageable pageable = PageRequest.of(0, 10);
@@ -72,15 +70,13 @@ public class PaginatedUserAndCountTest {
 	@Test
 	void testPaginationAndFilterByDate() {
 	    User user1 = buildValidUser();
-	    user1.setDateOfBirth(Date.from(LocalDate.of(2000, 1, 1)
-	        .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	    user1.setDateOfBirth(LocalDate.of(2000, 1, 1));
 	    userService.save(user1);
 
 	    User user2 = buildValidUser();
 	    user2.setEmail("c@example.com");
         user2.setPhoneNo("+628123456790");
-	    user2.setDateOfBirth(Date.from(LocalDate.of(1999, 1, 1)
-	        .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	    user2.setDateOfBirth(LocalDate.of(1999, 1, 1));
 	    userService.save(user2);
 
 	    Pageable pageable = PageRequest.of(0, 10);

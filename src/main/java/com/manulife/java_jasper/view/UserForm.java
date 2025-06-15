@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import com.manulife.java_jasper.model.User;
 import com.manulife.java_jasper.service.UserService;
@@ -29,7 +28,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./styles/shared-styles.css")
-@Route(value = "user-form", layout = MainLayout.class)
+@Route(value = "user-form/:id?", layout = MainLayout.class)
 public class UserForm extends FormLayout implements BeforeEnterObserver{
 	private final Binder<User> binder=new Binder<>(User.class);
 	
@@ -120,19 +119,17 @@ public class UserForm extends FormLayout implements BeforeEnterObserver{
 		
 		binder.forField(phoneNo).asRequired("Phone number is required")
 	    	.withValidator(phone -> phone.startsWith("+62"), "Phone must start with +62")
+	    	.withValidator(n -> (n.length() >= 9 && n.length()<=15), "Phone Length Must be between 9 - 15 character")
 	    	.bind(User::getPhoneNo, User::setPhoneNo);
 		
 		binder.forField(gender).bind(User::isMale, User::setMale);
 		
-		binder.forField(dob)
-	      .withValidator(date -> date.isBefore(LocalDate.now()), "Date must be in the past")
-	      .bind(
-	              user -> user.getDateOfBirth() != null
-	                  ? user.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-	                  : null,
-	              (user, localDate) -> user.setDateOfBirth(
-	                  Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
-	          );
+		binder.forField(dob) // dob is a DatePicker, and bound to LocalDate
+	    .withValidator(
+	        date -> date == null || date.isBefore(LocalDate.now()),
+	        "Date must be in the past"
+	    )
+	    .bind(User::getDateOfBirth, User::setDateOfBirth);
 	}
 	
 	private void clearForm() {
@@ -157,4 +154,51 @@ public class UserForm extends FormLayout implements BeforeEnterObserver{
             }
 		}
 	}
+
+	//-----------------------Start Getter & Setter-----------
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Binder<User> getBinder() {
+		return binder;
+	}
+
+	public EmailField getEmail() {
+		return email;
+	}
+
+	public TextField getName() {
+		return name;
+	}
+
+	public TextField getPhoneNo() {
+		return phoneNo;
+	}
+
+	public TextArea getAddress() {
+		return address;
+	}
+
+	public DatePicker getDob() {
+		return dob;
+	}
+
+	public RadioButtonGroup<Boolean> getGender() {
+		return gender;
+	}
+
+	public Button getSave() {
+		return save;
+	}
+
+	public Button getCancel() {
+		return cancel;
+	}
+	
+	
 }

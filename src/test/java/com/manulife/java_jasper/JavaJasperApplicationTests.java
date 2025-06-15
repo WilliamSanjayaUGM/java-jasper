@@ -5,14 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -21,15 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import com.manulife.java_jasper.exception.ReportGenerateException;
 import com.manulife.java_jasper.exception.UserNotFoundException;
 import com.manulife.java_jasper.model.User;
 import com.manulife.java_jasper.repository.UserRepository;
-import com.manulife.java_jasper.service.ReportService;
 import com.manulife.java_jasper.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -61,8 +52,7 @@ class JavaJasperApplicationTests {
 	     user.setName("William Sanjaya");
 	     user.setAddress("Jakarta");
 	     user.setMale(true);
-	     user.setDateOfBirth(Date.from(LocalDate.of(1996, 7, 21)
-	                .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	     user.setDateOfBirth(LocalDate.of(1996, 7, 21));
 	     return user;
 	}
 	
@@ -104,8 +94,7 @@ class JavaJasperApplicationTests {
 	@Test
     void testFutureDateOfBirthValidation() {
         User user = buildValidUser();
-        user.setDateOfBirth(Date.from(LocalDate.now().plusDays(1)
-                .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        user.setDateOfBirth(LocalDate.now().plusDays(1));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("dateOfBirth")));

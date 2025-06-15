@@ -49,8 +49,7 @@ public class UserReportTest {
 	     user.setName("William Sanjaya");
 	     user.setAddress("Jakarta");
 	     user.setMale(true);
-	     user.setDateOfBirth(Date.from(LocalDate.of(1996, 7, 21)
-	                .atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	     user.setDateOfBirth(LocalDate.of(1996, 7, 21));
 	     return user;
 	}
 	

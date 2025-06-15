@@ -10,6 +10,7 @@ This guide explains how to run, build, test, and deploy the `java-jasper` Spring
 
 - Java 21
 - Maven 3.9+
+- JasperSoft Studio (to compile .jrxml file)
 
 ### Steps
 
@@ -150,6 +151,9 @@ Replace `ClassNameTest` with one of the following:
 | `JavaJasperApplicationTests` | Validates user input and basic functionality |
 | `UserReportTest`             | Verifies Jasper report generation            |
 | `PaginatedUserAndCountTest`  | Tests user inquiry and filter pagination     |
+| `UserFormTest`               | Validates Vaadin UI User Form                |
+| `UserListViewTest`           | Validates Vaadin UI Inquiry Grid User        |
+| `UserRestTest`               | Tests User Rest API Controller               |
 
 ---
 
