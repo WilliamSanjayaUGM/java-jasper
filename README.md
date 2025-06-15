@@ -10,7 +10,6 @@ This guide explains how to run, build, test, and deploy the `java-jasper` Spring
 
 - Java 21
 - Maven 3.9+
-- JasperSoft Studio (to compile .jrxml file)
 
 ### Steps
 
