@@ -1,8 +1,6 @@
 package com.manulife.java_jasper.service.impl;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,11 +73,7 @@ public class UserServiceImpl implements UserService{
 	        return userRepository.findAll(pageable);
 	    }
 		
-		return userRepository.findByFilters(
-	            name != null ? "%" + name.toLowerCase() + "%" : null,
-	            dob != null ? Date.from(dob.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null,
-	            pageable
-	    );
+		return userRepository.findByFilters(name != null ? "%" + name.toLowerCase() + "%" : null,dob,pageable);
 	}
 	
 	@Override
@@ -88,9 +82,6 @@ public class UserServiceImpl implements UserService{
 	        return userRepository.count();
 	    }
 		
-		return userRepository.countByFilters(
-	            name != null ? "%" + name.toLowerCase() + "%" : null,
-	            dob != null ? Date.from(dob.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null
-	    );
+		return userRepository.countByFilters(name != null ? "%" + name.toLowerCase() + "%" : null,dob);
 	}
 }

@@ -124,16 +124,21 @@ public class UserListView extends VerticalLayout{
         	return new HorizontalLayout(edit,delete);
         }).setHeader("Actions");
         
-        String name = nameFilter.getValue();
-        LocalDate dob = dobFilter.getValue();
-        
         grid.setDataProvider(DataProvider.fromCallbacks(
 				//fetch callback
 				query->{
 					int page = query.getOffset() / query.getLimit();
                     Pageable pageable = PageRequest.of(page, query.getLimit());
+                    
+                    String name = nameFilter.getValue();
+                    LocalDate dob = dobFilter.getValue();
 					return userService.findPaginatedUser(name, dob, pageable).stream();
-				}, query -> (int) userService.count(name,dob)));
+				}, query -> {
+					 String name = nameFilter.getValue();
+	                 LocalDate dob = dobFilter.getValue();
+					return (int) userService.count(name,dob);
+				}
+		));
 	}
 
 	//--------------Start Getter & Setter ------------------------------

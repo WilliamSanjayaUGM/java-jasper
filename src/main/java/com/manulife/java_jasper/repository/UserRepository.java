@@ -1,6 +1,6 @@
 package com.manulife.java_jasper.repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +16,10 @@ public interface UserRepository extends JpaRepository<User,Long>{
 	@Query("SELECT u FROM User u WHERE "
 			+ "(:name IS NULL OR LOWER(u.name) LIKE LOWER(:name)) AND "
 		    + "(:dob IS NULL OR u.dateOfBirth = :dob)")
-	Page<User> findByFilters(@Param("name") String name, @Param("dob") Date dob, Pageable pageable);
+	Page<User> findByFilters(@Param("name") String name, @Param("dob") LocalDate dob, Pageable pageable);
 	
 	@Query("SELECT COUNT(u) FROM User u WHERE "
 			+ "(:name IS NULL OR LOWER(u.name) LIKE LOWER(:name)) AND "
 		    + "(:dob IS NULL OR u.dateOfBirth = :dob)")
-	long countByFilters(@Param("name") String name, @Param("dob") Date dob);
+	long countByFilters(@Param("name") String name, @Param("dob") LocalDate dob);
 }

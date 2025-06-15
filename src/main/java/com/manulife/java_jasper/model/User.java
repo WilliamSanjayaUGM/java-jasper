@@ -37,7 +37,6 @@ public class User {
 	private boolean male;
 	
 	@Past(message = "Date of birth must be in the past")
-	@Temporal(TemporalType.DATE)
 	private LocalDate dateOfBirth;
 
 	public Long getId() {
