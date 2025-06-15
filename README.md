@@ -1,31 +1,54 @@
-Deployment & Setup Instruction Guide:
+# Java Jasper Deployment & Setup Guide
 
-1. Running Locally
-Requirements:
+This guide explains how to run, build, and deploy the `java-jasper` Spring Boot + Vaadin + JasperReports application.
+
+---
+
+## 🚀 1. Running Locally
+
+### Requirements
 - Java 21
 - Maven 3.9+
-Steps:
-# Clone the project
-$ git clone git@github.com:WilliamSanjayaUGM/java-jasper.git
-$ cd java-jasper
-# Run the application:
-$ mvn clean spring-boot:run
 
-Open in browser:
-UI: http://localhost:8080
-H2 Console: http://localhost:8080/h2-console
+### Steps
+```bash / cmd
+# Clone the repository
+git clone git@github.com:WilliamSanjayaUGM/java-jasper.git
+cd java-jasper
 
-# If you want to config locally, just config the application.properties inside: src/main/resources/application.properties
-# ex: if you want to change the localhost:8080 become localhost:8081 -> server.port=8081
+# Run the application
+mvn clean spring-boot:run
+````
 
-2. Docker Deployment (Non-Prod & Prod)
-2.1 The DockerFile is already created
-2.2 docker-compose.yml is also already created.
-    - To run locally, use docker-compose.override.yml. Here is the example of docker-compose for local:
+### Access
 
-############ Start #################
-docker-compose.override.yml:
-# For local development
+* UI: [http://localhost:8080](http://localhost:8080)
+* H2 Console: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+
+> 💡 To configure the app locally, edit:
+> `src/main/resources/application.properties`
+> Example: Change the port by setting `server.port=8081`
+
+---
+
+## 🐳 2. Docker Deployment (Non-Prod & Prod)
+
+### 2.1 Files You Need
+
+* `Dockerfile` – Already created
+* `docker-compose.yml` – Base setup
+* `docker-compose.override.yml` – For local development
+* `docker-compose.prod.yml` – For production config
+
+---
+
+### 2.2 Running with Docker Compose
+
+#### ✅ Local Development
+
+Example of `docker-compose.override.yml`:
+
+```
 version: '3.8'
 
 services:
@@ -40,34 +63,88 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     volumes:
       - .:/app
-############ End #################
+```
 
-    - To run on prod, use docker-compose.prod.yml. And adjust this part:
-        - image: your-registry/java-jasper:prod -> to use your image
-        - And also the SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD -> by using whatever database you're using
-2.3 Docker commands:
-# Local Dev:
+Run locally:
+
+```bash
 docker-compose up --build
+```
 
-# Production:
+#### 🚀 Production Environment
+
+Adjust in `docker-compose.prod.yml`:
+
+* Replace `image: your-registry/java-jasper:prod` with your real image
+* Update the database credentials in `SPRING_DATASOURCE_URL`, `USERNAME`, and `PASSWORD`
+
+Run in prod:
+
+```bash
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
 
-3. Deploy to Non-Prod & Prod
-General Instructions:
+---
 
-Build image and push to registry (DockerHub, GitHub Container Registry, or private)
-$ docker tag java-jasper:latest <your-registry>/java-jasper:non-prod
-$ docker push <your-registry>/java-jasper:non-prod
+## ☁️ 3. Deploying to Non-Prod & Prod
 
-On your server or cloud:
+### Build & Push Docker Image
 
-$ docker pull <your-registry>/java-jasper:non-prod
-$ docker run -d -p 8080:8080 --name java-jasper <your-registry>/java-jasper:non-prod
+```bash
+docker build -t java-jasper:latest .
+docker tag java-jasper:latest <your-registry>/java-jasper:non-prod
+docker push <your-registry>/java-jasper:non-prod
+```
 
-For Production:
-- Set up monitoring (Prometheus, Grafana, etc.)
-- Set up logging (ELK stack, etc.)
-- Use a production-ready database
-- Use HTTPS with reverse proxy (e.g., Nginx, Traefik)
-- Configure environment variables securely
-Which all of the above hasn't been added yet in this prototype & testing project
+### Run on Server
+
+```bash
+docker pull <your-registry>/java-jasper:non-prod
+docker run -d -p 8080:8080 --name java-jasper <your-registry>/java-jasper:non-prod
+```
+
+---
+
+### ✅ Production Notes
+
+For a real deployment:
+
+* ✅ Set up monitoring (e.g., Prometheus, Grafana)
+* ✅ Centralize logging (e.g., ELK Stack)
+* ✅ Use a persistent, production-ready database
+* ✅ Use HTTPS via Nginx or Traefik
+* ✅ Secure environment configs
+
+> ⚠️ All of these production aspects are **not yet implemented** in this prototype.
+
+---
+
+## 🧪 4. Run Tests
+
+To run unit/integration tests:
+
+```bash
+mvn clean test
+```
+
+---
+
+## 📁 Local Configuration Example
+
+Adjust `src/main/resources/application.properties` as needed:
+
+```properties
+server.port=8080
+spring.datasource.url=jdbc:h2:mem:manulifedb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+```
+
+---
+
+## 🤝 Contribution
+
+Feel free to fork the repo or clone the repo!
+
+---
