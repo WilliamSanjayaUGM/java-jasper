@@ -171,6 +171,16 @@ spring.jpa.hibernate.ddl-auto=update
 
 ---
 
+## Here are my api documentation:
+
+1. /api/user/saveUser             -> to save user entity to DB
+2. /api/user/getUserInquiry       -> Inquiry Filter with paging for User
+3. /api/user/getUserById          -> Get User by Id
+4. /api/user/deleteUser           -> Delete User by id
+5. /api/user/downloadUserReport   -> Download jasper report to .pdf
+
+---
+
 ## 🤝 Contribution
 
 Feel free to fork or clone this repo, open issues, and submit PRs!
