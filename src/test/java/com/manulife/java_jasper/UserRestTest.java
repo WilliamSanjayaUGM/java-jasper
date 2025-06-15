@@ -109,7 +109,7 @@ public class UserRestTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content[0].name").value("william"));
+            .andExpect(jsonPath("$[0].name").value("William"));
     }
 
     @Test

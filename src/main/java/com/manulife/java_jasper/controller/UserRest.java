@@ -41,8 +41,8 @@ public class UserRest {
 	@RequestMapping(value="getUserInquiry",method = RequestMethod.POST)
 	public ResponseEntity<Page<User>> getUserInquiry(@RequestBody InquiryUserRequestDto inquiryRequest){
 		Sort sort = !inquiryRequest.isAsc() ? Sort.by(inquiryRequest.getSortBy()).descending() : Sort.by(inquiryRequest.getSortBy()).ascending();
-		int page=inquiryRequest.getPageIdx()*inquiryRequest.getSize();
-		int size=inquiryRequest.getSize();
+		int page = inquiryRequest.getPageIdx();
+	    int size = inquiryRequest.getSize();
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<User> users=userService.findPaginatedUser(inquiryRequest.getName(),inquiryRequest.getDateOfBirth(),pageable);
 		return ResponseEntity.ok().body(users);
