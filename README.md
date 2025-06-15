@@ -14,8 +14,12 @@ This guide explains how to run, build, test, and deploy the `java-jasper` Spring
 ### Steps
 
 ```bash
-# Clone the repository
+# Clone the repository using SSH:
 git clone git@github.com:WilliamSanjayaUGM/java-jasper.git
+
+# Clone the repository using https:
+git clone https://github.com/WilliamSanjayaUGM/java-jasper.gitava-jasper.git
+
 cd java-jasper
 
 # Run the application
